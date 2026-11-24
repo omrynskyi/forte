@@ -3,6 +3,7 @@ signatures of existing ones (other tasks rely on them). All data is fake (NFR-9)
 
 import itertools
 import uuid
+from collections.abc import Sequence
 from datetime import UTC, date, datetime, timedelta
 
 from sqlalchemy.orm import Session
@@ -15,6 +16,8 @@ from app.models import (
     Employee,
     Membership,
     PayPeriod,
+    PayrollItem,
+    PayrollRun,
     User,
     Withholding,
 )
@@ -28,6 +31,8 @@ from app.models.enums import (
     PaySchedule,
     PayType,
     Role,
+    RunState,
+    RunType,
 )
 from app.security.crypto import last4
 
@@ -199,3 +204,60 @@ def other_company_setup(db: Session) -> tuple[Company, Membership]:
     """A second tenant with its own Admin, for cross-tenant tests (NFR-7)."""
     other = make_company(db, legal_name=f"Other Co {uuid.uuid4().hex[:6]}")
     return other, make_member(db, other, Role.ADMIN)
+
+
+def make_item(
+    db: Session, run: PayrollRun, employee: Employee, *, gross_cents: int = 196_000
+) -> PayrollItem:
+    """A payroll item with no taxes (net = gross). The run must still be DRAFT (DB trigger)."""
+    item = PayrollItem(
+        company_id=run.company_id,
+        run_id=run.id,
+        employee_id=employee.id,
+        pay_type=PayType.HOURLY,
+        minutes=4800,
+        rate_cents=2450,
+        gross_cents=gross_cents,
+        net_cents=gross_cents,
+        employer_cost_cents=gross_cents,
+    )
+    db.add(item)
+    db.flush()
+    return item
+
+
+def make_run(
+    db: Session,
+    company: Company,
+    *,
+    state: RunState = RunState.DRAFT,
+    run_type: RunType = RunType.REGULAR,
+    period: PayPeriod | None = None,
+    employees: Sequence[Employee] = (),
+    submitted_by: Membership | None = None,
+) -> PayrollRun:
+    """A run with one no-tax item per employee, put straight into `state`.
+
+    TEST SETUP ONLY: setting `state` directly skips transition() so a test can start from any
+    state. App code must always go through app.payroll.state_machine.transition().
+    A regular run gets a fresh pay period (cutoff 3 h from now) unless you pass one.
+    """
+    if run_type == RunType.REGULAR and period is None:
+        period = make_pay_period(db, company, date(2026, 12, 11) + timedelta(weeks=2 * next(_seq)))
+    run = PayrollRun(
+        company_id=company.id,
+        run_type=run_type,
+        state=RunState.DRAFT,
+        pay_period_id=period.id if period else None,
+        pay_date=period.pay_date if period else date(2026, 12, 11),
+    )
+    db.add(run)
+    db.flush()
+    for emp in employees:
+        make_item(db, run, emp)
+    run.state = state
+    if submitted_by is not None:
+        run.submitted_by_membership_id = submitted_by.id
+        run.submitted_at = datetime.now(UTC)
+    db.flush()
+    return run
