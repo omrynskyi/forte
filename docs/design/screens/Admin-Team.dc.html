@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Team and roles</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit;text-decoration:none}
+.nav{display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;font-size:16px;color:var(--ink-soft)}
+.nav:hover{background:var(--track)}
+.nav-on{background:var(--track);color:var(--ink);font-weight:700}
+.field{display:block;box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+.lbl{display:block;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.tbl{width:100%;min-width:720px;border-collapse:collapse}
+.tbl th{padding:0 12px 12px;text-align:left;font-weight:400;font-size:12px;line-height:16px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);border-bottom:2px solid var(--ink)}
+.tbl td{padding:12px;border-bottom:1px solid var(--line);font-size:16px;line-height:24px;color:var(--ink);vertical-align:middle}
+.tbl td.m{color:var(--ink-soft)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:1150px;background:var(--paper);color:var(--ink);font-family:var(--font-text)">
+
+  <nav aria-label="Main" style="flex:0 0 248px;box-sizing:border-box;padding:32px 24px;display:flex;flex-direction:column;gap:32px;background:var(--paper-alt);border-right:1px solid var(--line)">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-family:var(--font-display);font-weight:500;font-size:32px;line-height:36px;letter-spacing:-0.02em">Forté</span>
+      <span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Larkspur Bakery</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <a class="nav" href="Admin-Home.dc.html">Home</a>
+      <a class="nav" href="Admin-Approve.dc.html">Payroll</a>
+      <a class="nav" href="Mgr-Timesheets.dc.html">Timesheets</a>
+      <a class="nav nav-on" href="Admin-Team.dc.html" aria-current="page">Team and roles</a>
+      <a class="nav" href="Admin-History.dc.html">History and reports</a>
+      <a class="nav" href="Admin-Setup.dc.html">Company setup</a>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:18px;color:var(--ink-muted)">
+      <span style="font-size:14px;font-weight:700;color:var(--ink)">Isabel Moreno</span>
+      <span>Admin</span>
+      <span>Sandbox. No real money moves.</span>
+    </div>
+  </nav>
+
+  <main style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:48px 64px;display:flex;flex-direction:column;gap:48px">
+
+    <header style="display:flex;flex-direction:column;gap:8px">
+      <p class="ft-eyebrow">Team and roles</p>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Who can do what</h1>
+      <p style="margin:0;font-size:20px;line-height:28px;color:var(--ink-soft)">Three roles, kept apart on purpose. Only you can approve payroll.</p>
+    </header>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:24px">
+      <x-import component-from-global-scope="Forte.Card" tone="muted" title="Admin">
+        <p>Signs up the company, connects the bank and approves payroll. The only role that can.</p>
+      </x-import>
+      <x-import component-from-global-scope="Forte.Card" tone="muted" title="Payroll Manager">
+        <p>Prepares payroll. Can't approve it or edit their own pay.</p>
+      </x-import>
+      <x-import component-from-global-scope="Forte.Card" tone="muted" title="Employee">
+        <p>Logs hours if they're hourly, manages their own details and reads their paystubs.</p>
+      </x-import>
+    </div>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Invite someone</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:24px;align-items:end">
+        <div>
+          <label class="lbl" for="invite-email">Email</label>
+          <input class="field" id="invite-email" type="email" value="name@larkspurbakery.example">
+        </div>
+        <div>
+          <label class="lbl" for="invite-role">Role</label>
+          <select class="field" id="invite-role"><option>Employee</option><option>Payroll Manager</option></select>
+        </div>
+        <div style="display:flex">
+          <x-import component-from-global-scope="Forte.Button" variant="primary">Send invite</x-import>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:16px">
+      <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Your team</h2>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead>
+            <tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col"><span style="position:absolute;width:1px;height:1px;overflow:hidden">Actions</span></th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Isabel Moreno</strong> <span style="color:var(--ink-muted);font-size:13px">(you)</span></td><td class="m">isabel@larkspurbakery.example</td><td>Admin</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Ana Lindqvist</strong></td><td class="m">ana@larkspurbakery.example</td><td>Payroll Manager</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Marisol Vega</strong></td><td class="m">marisol@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Devon Park</strong></td><td class="m">devon@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Priya Raman</strong></td><td class="m">priya@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Tomas Weber</strong></td><td class="m">tomas@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Jun Okafor</strong></td><td class="m">jun@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Active</x-import></td><td></td></tr>
+            <tr><td><strong>Rosa Delgado</strong></td><td class="m">rosa@larkspurbakery.example</td><td>Employee</td><td><x-import component-from-global-scope="Forte.StatusPill">Invited</x-import></td><td><x-import component-from-global-scope="Forte.Button" variant="quiet" size="sm">Resend invite</x-import></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin:0;font-size:13px;line-height:18px;color:var(--ink-muted)">Every role change is written to the audit log with who made it and when. To stop paying someone, use End employment on their record. People on payroll can't be removed here.</p>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1150}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

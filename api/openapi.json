@@ -1,0 +1,5760 @@
+{
+  "components": {
+    "schemas": {
+      "AccountType": {
+        "enum": [
+          "checking",
+          "savings"
+        ],
+        "title": "AccountType",
+        "type": "string"
+      },
+      "AddressIn": {
+        "properties": {
+          "city": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "City",
+            "type": "string"
+          },
+          "line1": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Line1",
+            "type": "string"
+          },
+          "line2": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line2"
+          },
+          "state": {
+            "default": "CA",
+            "pattern": "^CA$",
+            "title": "State",
+            "type": "string"
+          },
+          "zip": {
+            "pattern": "^\\d{5}(-\\d{4})?$",
+            "title": "Zip",
+            "type": "string"
+          }
+        },
+        "required": [
+          "line1",
+          "city",
+          "zip"
+        ],
+        "title": "AddressIn",
+        "type": "object"
+      },
+      "AddressOut": {
+        "properties": {
+          "city": {
+            "title": "City",
+            "type": "string"
+          },
+          "line1": {
+            "title": "Line1",
+            "type": "string"
+          },
+          "line2": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Line2"
+          },
+          "state": {
+            "title": "State",
+            "type": "string"
+          },
+          "zip": {
+            "title": "Zip",
+            "type": "string"
+          }
+        },
+        "required": [
+          "line1",
+          "line2",
+          "city",
+          "state",
+          "zip"
+        ],
+        "title": "AddressOut",
+        "type": "object"
+      },
+      "AuditEntryOut": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "actor_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Name"
+          },
+          "actor_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Role"
+          },
+          "after": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "After"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Before"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "entity_id": {
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "actor_name",
+          "actor_role",
+          "action",
+          "entity_type",
+          "entity_id",
+          "summary",
+          "before",
+          "after"
+        ],
+        "title": "AuditEntryOut",
+        "type": "object"
+      },
+      "BankAccountIn": {
+        "properties": {
+          "account_number": {
+            "pattern": "^\\d{4,17}$",
+            "title": "Account Number",
+            "type": "string"
+          },
+          "account_type": {
+            "$ref": "#/components/schemas/AccountType",
+            "default": "checking"
+          },
+          "routing_number": {
+            "pattern": "^\\d{9}$",
+            "title": "Routing Number",
+            "type": "string"
+          }
+        },
+        "required": [
+          "routing_number",
+          "account_number"
+        ],
+        "title": "BankAccountIn",
+        "type": "object"
+      },
+      "BankAccountOut": {
+        "properties": {
+          "account_last4": {
+            "title": "Account Last4",
+            "type": "string"
+          },
+          "account_type": {
+            "$ref": "#/components/schemas/AccountType"
+          },
+          "failure_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Reason"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "routing_number": {
+            "title": "Routing Number",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/BankAccountStatus"
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verified At"
+          }
+        },
+        "required": [
+          "id",
+          "routing_number",
+          "account_last4",
+          "account_type",
+          "status",
+          "verified_at"
+        ],
+        "title": "BankAccountOut",
+        "type": "object"
+      },
+      "BankAccountStatus": {
+        "enum": [
+          "pending",
+          "verified",
+          "failed",
+          "replaced"
+        ],
+        "title": "BankAccountStatus",
+        "type": "string"
+      },
+      "BonusItemIn": {
+        "properties": {
+          "amount_cents": {
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents",
+            "type": "integer"
+          },
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "employee_id",
+          "amount_cents"
+        ],
+        "title": "BonusItemIn",
+        "type": "object"
+      },
+      "CaFilingStatus": {
+        "enum": [
+          "single",
+          "married",
+          "head_of_household"
+        ],
+        "title": "CaFilingStatus",
+        "type": "string"
+      },
+      "CompanyBrief": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "legal_name": {
+            "title": "Legal Name",
+            "type": "string"
+          },
+          "setup_complete": {
+            "title": "Setup Complete",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "legal_name",
+          "setup_complete"
+        ],
+        "title": "CompanyBrief",
+        "type": "object"
+      },
+      "CompanyCreate": {
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/AddressIn"
+          },
+          "ein": {
+            "pattern": "^\\d{2}-?\\d{7}$",
+            "title": "Ein",
+            "type": "string"
+          },
+          "legal_name": {
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "Legal Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "legal_name",
+          "ein",
+          "address"
+        ],
+        "title": "CompanyCreate",
+        "type": "object"
+      },
+      "CompanyOut": {
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/AddressOut"
+          },
+          "cutoff_lead_days": {
+            "title": "Cutoff Lead Days",
+            "type": "integer"
+          },
+          "ein_last4": {
+            "title": "Ein Last4",
+            "type": "string"
+          },
+          "first_pay_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Pay Date"
+          },
+          "funding_account": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BankAccountOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "legal_name": {
+            "title": "Legal Name",
+            "type": "string"
+          },
+          "pay_schedule": {
+            "anyOf": [
+              {
+                "const": "biweekly",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pay Schedule"
+          },
+          "setup": {
+            "$ref": "#/components/schemas/SetupChecklist"
+          }
+        },
+        "required": [
+          "id",
+          "legal_name",
+          "ein_last4",
+          "address",
+          "pay_schedule",
+          "first_pay_date",
+          "cutoff_lead_days",
+          "funding_account",
+          "setup"
+        ],
+        "title": "CompanyOut",
+        "type": "object"
+      },
+      "CompanyUpdate": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AddressIn"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ein": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{2}-?\\d{7}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ein"
+          },
+          "legal_name": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Name"
+          }
+        },
+        "title": "CompanyUpdate",
+        "type": "object"
+      },
+      "CompensationIn": {
+        "properties": {
+          "amount_cents": {
+            "exclusiveMinimum": 0.0,
+            "title": "Amount Cents",
+            "type": "integer"
+          },
+          "effective_date": {
+            "format": "date",
+            "title": "Effective Date",
+            "type": "string"
+          },
+          "pay_type": {
+            "$ref": "#/components/schemas/PayType"
+          }
+        },
+        "required": [
+          "pay_type",
+          "amount_cents",
+          "effective_date"
+        ],
+        "title": "CompensationIn",
+        "type": "object"
+      },
+      "CompensationOut": {
+        "properties": {
+          "amount_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Amount Cents",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "effective_date": {
+            "format": "date",
+            "title": "Effective Date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "pay_type": {
+            "$ref": "#/components/schemas/PayType"
+          },
+          "set_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Set By Name"
+          }
+        },
+        "required": [
+          "id",
+          "pay_type",
+          "amount_cents",
+          "effective_date",
+          "set_by_name",
+          "created_at",
+          "is_current"
+        ],
+        "title": "CompensationOut",
+        "type": "object"
+      },
+      "CorrectionBrief": {
+        "properties": {
+          "correction_item_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correction Item Id"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "missed_minutes": {
+            "title": "Missed Minutes",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "opened",
+              "in_review",
+              "approved",
+              "paid",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "reason",
+          "missed_minutes",
+          "gross_cents",
+          "correction_item_id",
+          "created_at"
+        ],
+        "title": "CorrectionBrief",
+        "type": "object"
+      },
+      "CorrectionIn": {
+        "properties": {
+          "missed_minutes": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 20160.0,
+            "title": "Missed Minutes",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "original_item_id": {
+            "format": "uuid",
+            "title": "Original Item Id",
+            "type": "string"
+          },
+          "reason": {
+            "const": "missed_hours",
+            "default": "missed_hours",
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "original_item_id",
+          "missed_minutes"
+        ],
+        "title": "CorrectionIn",
+        "type": "object"
+      },
+      "CorrectionOut": {
+        "properties": {
+          "correction_run_id": {
+            "format": "uuid",
+            "title": "Correction Run Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "missed_minutes": {
+            "title": "Missed Minutes",
+            "type": "integer"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "original_item_id": {
+            "format": "uuid",
+            "title": "Original Item Id",
+            "type": "string"
+          },
+          "original_pay_date": {
+            "format": "date",
+            "title": "Original Pay Date",
+            "type": "string"
+          },
+          "original_run_id": {
+            "format": "uuid",
+            "title": "Original Run Id",
+            "type": "string"
+          },
+          "rate_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Rate Cents",
+            "type": "integer"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "opened",
+              "in_review",
+              "approved",
+              "paid",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "employee_id",
+          "employee_name",
+          "original_item_id",
+          "original_run_id",
+          "original_pay_date",
+          "correction_run_id",
+          "reason",
+          "missed_minutes",
+          "rate_cents",
+          "gross_cents",
+          "net_cents",
+          "status",
+          "note",
+          "created_at"
+        ],
+        "title": "CorrectionOut",
+        "type": "object"
+      },
+      "CorrectionPreview": {
+        "description": "What the Mgr-Correction screen shows before submitting.",
+        "properties": {
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "employee_taxes_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employee Taxes Cents",
+            "type": "integer"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          },
+          "original_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Minutes"
+          },
+          "original_pay_date": {
+            "format": "date",
+            "title": "Original Pay Date",
+            "type": "string"
+          },
+          "rate_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Rate Cents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "employee_name",
+          "original_pay_date",
+          "original_minutes",
+          "rate_cents",
+          "gross_cents",
+          "employee_taxes_cents",
+          "net_cents"
+        ],
+        "title": "CorrectionPreview",
+        "type": "object"
+      },
+      "DashboardOut": {
+        "description": "Admin-Home (RUN-6). The client renders the countdown from cutoff_at - server_time, then ticks\nlocally. Color thresholds are a UI concern (docs/ARCHITECTURE.md#countdown).",
+        "properties": {
+          "at_risk": {
+            "title": "At Risk",
+            "type": "boolean"
+          },
+          "company_name": {
+            "title": "Company Name",
+            "type": "string"
+          },
+          "current_run": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RunSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cutoff_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutoff At"
+          },
+          "next_period": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PayPeriodOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "not_ready": {
+            "items": {
+              "$ref": "#/components/schemas/RunBlocker"
+            },
+            "title": "Not Ready",
+            "type": "array"
+          },
+          "recent_activity": {
+            "items": {
+              "$ref": "#/components/schemas/AuditEntryOut"
+            },
+            "title": "Recent Activity",
+            "type": "array"
+          },
+          "server_time": {
+            "format": "date-time",
+            "title": "Server Time",
+            "type": "string"
+          },
+          "setup": {
+            "$ref": "#/components/schemas/SetupChecklist"
+          },
+          "setup_complete": {
+            "title": "Setup Complete",
+            "type": "boolean"
+          },
+          "timesheets": {
+            "$ref": "#/components/schemas/TimesheetCounts"
+          }
+        },
+        "required": [
+          "company_name",
+          "server_time",
+          "next_period",
+          "current_run",
+          "cutoff_at",
+          "at_risk",
+          "timesheets",
+          "not_ready",
+          "setup_complete",
+          "setup",
+          "recent_activity"
+        ],
+        "title": "DashboardOut",
+        "type": "object"
+      },
+      "DevLoginRequest": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "DevLoginRequest",
+        "type": "object"
+      },
+      "DevUserOut": {
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MembershipStatus"
+          }
+        },
+        "required": [
+          "email",
+          "display_name",
+          "role",
+          "status"
+        ],
+        "title": "DevUserOut",
+        "type": "object"
+      },
+      "EmployeeCreate": {
+        "description": "EMP-1: creates the Employee, its first Compensation, and an EMPLOYEE membership + invite.",
+        "properties": {
+          "compensation": {
+            "$ref": "#/components/schemas/CompensationIn"
+          },
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "first_name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "First Name",
+            "type": "string"
+          },
+          "hire_date": {
+            "format": "date",
+            "title": "Hire Date",
+            "type": "string"
+          },
+          "job_title": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Job Title",
+            "type": "string"
+          },
+          "last_name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Last Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "job_title",
+          "hire_date",
+          "compensation"
+        ],
+        "title": "EmployeeCreate",
+        "type": "object"
+      },
+      "EmployeeListItem": {
+        "properties": {
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "employee_number": {
+            "title": "Employee Number",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "job_title": {
+            "title": "Job Title",
+            "type": "string"
+          },
+          "membership_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MembershipStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "pay_amount_cents": {
+            "anyOf": [
+              {
+                "description": "Integer cents. $12.34 is 1234.",
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pay Amount Cents"
+          },
+          "pay_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PayType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ready": {
+            "title": "Ready",
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EmploymentStatus"
+          }
+        },
+        "required": [
+          "id",
+          "employee_number",
+          "name",
+          "email",
+          "job_title",
+          "pay_type",
+          "pay_amount_cents",
+          "status",
+          "membership_status",
+          "ready",
+          "missing"
+        ],
+        "title": "EmployeeListItem",
+        "type": "object"
+      },
+      "EmployeeOut": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AddressOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "compensation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompensationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deposit_account": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BankAccountOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dob": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dob"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "employee_number": {
+            "title": "Employee Number",
+            "type": "integer"
+          },
+          "end_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Date"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "hire_date": {
+            "format": "date",
+            "title": "Hire Date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "job_title": {
+            "title": "Job Title",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "membership_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MembershipStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          },
+          "ready": {
+            "title": "Ready",
+            "type": "boolean"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "separation_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SeparationType"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ssn_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssn Last4"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EmploymentStatus"
+          },
+          "withholding": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WithholdingOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "employee_number",
+          "first_name",
+          "last_name",
+          "email",
+          "job_title",
+          "hire_date",
+          "dob",
+          "ssn_last4",
+          "address",
+          "status",
+          "end_date",
+          "separation_type",
+          "membership_status",
+          "role",
+          "compensation",
+          "withholding",
+          "deposit_account",
+          "ready",
+          "missing"
+        ],
+        "title": "EmployeeOut",
+        "type": "object"
+      },
+      "EmployeeUpdate": {
+        "properties": {
+          "first_name": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
+          },
+          "job_title": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Title"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
+          }
+        },
+        "title": "EmployeeUpdate",
+        "type": "object"
+      },
+      "EmployerTaxLines": {
+        "properties": {
+          "ca_ett_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Ca Ett Cents",
+            "type": "integer"
+          },
+          "ca_sui_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Ca Sui Cents",
+            "type": "integer"
+          },
+          "futa_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Futa Cents",
+            "type": "integer"
+          },
+          "medicare_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Medicare Cents",
+            "type": "integer"
+          },
+          "social_security_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Social Security Cents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "social_security_cents",
+          "medicare_cents",
+          "futa_cents",
+          "ca_sui_cents",
+          "ca_ett_cents"
+        ],
+        "title": "EmployerTaxLines",
+        "type": "object"
+      },
+      "EmploymentStatus": {
+        "enum": [
+          "active",
+          "terminated"
+        ],
+        "title": "EmploymentStatus",
+        "type": "string"
+      },
+      "FedFilingStatus": {
+        "enum": [
+          "single",
+          "married_jointly",
+          "head_of_household"
+        ],
+        "title": "FedFilingStatus",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HomeOut": {
+        "description": "Emp-Home. `upcoming` is the preview paystub of a submitted run (PAY-2), if any.",
+        "properties": {
+          "company_name": {
+            "title": "Company Name",
+            "type": "string"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "is_hourly": {
+            "title": "Is Hourly",
+            "type": "boolean"
+          },
+          "minutes_this_period": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes This Period"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          },
+          "next_pay_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Pay Date"
+          },
+          "onboarding_complete": {
+            "title": "Onboarding Complete",
+            "type": "boolean"
+          },
+          "recent": {
+            "items": {
+              "$ref": "#/components/schemas/PaystubSummary"
+            },
+            "title": "Recent",
+            "type": "array"
+          },
+          "upcoming": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaystubSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "first_name",
+          "company_name",
+          "next_pay_date",
+          "onboarding_complete",
+          "missing",
+          "is_hourly",
+          "minutes_this_period",
+          "upcoming",
+          "recent"
+        ],
+        "title": "HomeOut",
+        "type": "object"
+      },
+      "InviteIn": {
+        "description": "Invite an Admin or Payroll Manager. Employees are invited via POST /api/employees (EMP-1).",
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "admin",
+              "payroll_manager"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "role"
+        ],
+        "title": "InviteIn",
+        "type": "object"
+      },
+      "MagicLinkAccepted": {
+        "properties": {
+          "message": {
+            "default": "If that email can sign in, we sent a link. It works once, for 15 minutes.",
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "title": "MagicLinkAccepted",
+        "type": "object"
+      },
+      "MagicLinkRequest": {
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "MagicLinkRequest",
+        "type": "object"
+      },
+      "MeOut": {
+        "description": "Everything the frontend needs to route a signed-in user:\n- no membership                 -> /setup (create a company)\n- role admin/payroll_manager    -> staff app (/admin or /payroll)\n- employee, onboarding not done -> /me/onboarding\n- status former                 -> /me/former",
+        "properties": {
+          "company": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompanyBrief"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "employee_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Id"
+          },
+          "membership": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MembershipBrief"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "onboarding": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OnboardingStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "email",
+          "display_name",
+          "membership",
+          "company",
+          "employee_id",
+          "onboarding"
+        ],
+        "title": "MeOut",
+        "type": "object"
+      },
+      "MemberOut": {
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "display_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Name"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "employee_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employee Id"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MembershipStatus"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "display_name",
+          "role",
+          "status",
+          "employee_id",
+          "created_at"
+        ],
+        "title": "MemberOut",
+        "type": "object"
+      },
+      "MembershipBrief": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "status": {
+            "$ref": "#/components/schemas/MembershipStatus"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "status"
+        ],
+        "title": "MembershipBrief",
+        "type": "object"
+      },
+      "MembershipStatus": {
+        "enum": [
+          "invited",
+          "active",
+          "former",
+          "removed"
+        ],
+        "title": "MembershipStatus",
+        "type": "string"
+      },
+      "OnboardingStatus": {
+        "properties": {
+          "bank_account": {
+            "title": "Bank Account",
+            "type": "boolean"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "personal_info": {
+            "title": "Personal Info",
+            "type": "boolean"
+          },
+          "withholding": {
+            "title": "Withholding",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "personal_info",
+          "withholding",
+          "bank_account",
+          "complete"
+        ],
+        "title": "OnboardingStatus",
+        "type": "object"
+      },
+      "PayPeriodOut": {
+        "properties": {
+          "cutoff_at": {
+            "format": "date-time",
+            "title": "Cutoff At",
+            "type": "string"
+          },
+          "end_date": {
+            "format": "date",
+            "title": "End Date",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "pay_date": {
+            "format": "date",
+            "title": "Pay Date",
+            "type": "string"
+          },
+          "regular_run_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regular Run Id"
+          },
+          "regular_run_state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regular Run State"
+          },
+          "start_date": {
+            "format": "date",
+            "title": "Start Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "start_date",
+          "end_date",
+          "pay_date",
+          "cutoff_at"
+        ],
+        "title": "PayPeriodOut",
+        "type": "object"
+      },
+      "PayScheduleIn": {
+        "properties": {
+          "cutoff_lead_days": {
+            "default": 2,
+            "maximum": 3.0,
+            "minimum": 1.0,
+            "title": "Cutoff Lead Days",
+            "type": "integer"
+          },
+          "first_pay_date": {
+            "format": "date",
+            "title": "First Pay Date",
+            "type": "string"
+          },
+          "schedule": {
+            "const": "biweekly",
+            "default": "biweekly",
+            "title": "Schedule",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_pay_date"
+        ],
+        "title": "PayScheduleIn",
+        "type": "object"
+      },
+      "PayType": {
+        "enum": [
+          "salary",
+          "hourly"
+        ],
+        "title": "PayType",
+        "type": "string"
+      },
+      "PaystubDetail": {
+        "properties": {
+          "corrections": {
+            "items": {
+              "$ref": "#/components/schemas/CorrectionBrief"
+            },
+            "title": "Corrections",
+            "type": "array"
+          },
+          "corrects_item_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrects Item Id"
+          },
+          "deposit_account_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deposit Account Last4"
+          },
+          "earnings": {
+            "items": {
+              "$ref": "#/components/schemas/PaystubLine"
+            },
+            "title": "Earnings",
+            "type": "array"
+          },
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "employee_number": {
+            "title": "Employee Number",
+            "type": "integer"
+          },
+          "employee_taxes_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employee Taxes Cents",
+            "type": "integer"
+          },
+          "employer_address": {
+            "title": "Employer Address",
+            "type": "string"
+          },
+          "employer_name": {
+            "title": "Employer Name",
+            "type": "string"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "headline": {
+            "title": "Headline",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_preview": {
+            "title": "Is Preview",
+            "type": "boolean"
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memo"
+          },
+          "minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          },
+          "pay_date": {
+            "format": "date",
+            "title": "Pay Date",
+            "type": "string"
+          },
+          "pay_type": {
+            "$ref": "#/components/schemas/PayType"
+          },
+          "pdf_available": {
+            "title": "Pdf Available",
+            "type": "boolean"
+          },
+          "period_end": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period End"
+          },
+          "period_start": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Start"
+          },
+          "rate_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Rate Cents",
+            "type": "integer"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "run_type": {
+            "$ref": "#/components/schemas/RunType"
+          },
+          "ssn_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssn Last4"
+          },
+          "taxes": {
+            "items": {
+              "$ref": "#/components/schemas/PaystubLine"
+            },
+            "title": "Taxes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "run_type",
+          "pay_date",
+          "is_preview",
+          "gross_cents",
+          "net_cents",
+          "corrections",
+          "corrects_item_id",
+          "pdf_available",
+          "period_start",
+          "period_end",
+          "employer_name",
+          "employer_address",
+          "employee_name",
+          "employee_number",
+          "ssn_last4",
+          "pay_type",
+          "minutes",
+          "rate_cents",
+          "memo",
+          "headline",
+          "earnings",
+          "taxes",
+          "employee_taxes_cents",
+          "deposit_account_last4"
+        ],
+        "title": "PaystubDetail",
+        "type": "object"
+      },
+      "PaystubLine": {
+        "properties": {
+          "amount_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Amount Cents",
+            "type": "integer"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "explanation": {
+            "title": "Explanation",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "label",
+          "amount_cents",
+          "explanation"
+        ],
+        "title": "PaystubLine",
+        "type": "object"
+      },
+      "PaystubPdfLink": {
+        "description": "PAY-3: short-lived presigned URL to the stored, immutable PDF. Open it right away.",
+        "properties": {
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expires_at",
+          "filename"
+        ],
+        "title": "PaystubPdfLink",
+        "type": "object"
+      },
+      "PaystubSummary": {
+        "properties": {
+          "corrections": {
+            "items": {
+              "$ref": "#/components/schemas/CorrectionBrief"
+            },
+            "title": "Corrections",
+            "type": "array"
+          },
+          "corrects_item_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrects Item Id"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_preview": {
+            "title": "Is Preview",
+            "type": "boolean"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          },
+          "pay_date": {
+            "format": "date",
+            "title": "Pay Date",
+            "type": "string"
+          },
+          "pdf_available": {
+            "title": "Pdf Available",
+            "type": "boolean"
+          },
+          "run_id": {
+            "format": "uuid",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "run_type": {
+            "$ref": "#/components/schemas/RunType"
+          }
+        },
+        "required": [
+          "id",
+          "run_id",
+          "run_type",
+          "pay_date",
+          "is_preview",
+          "gross_cents",
+          "net_cents",
+          "corrections",
+          "corrects_item_id",
+          "pdf_available"
+        ],
+        "title": "PaystubSummary",
+        "type": "object"
+      },
+      "PersonalInfoIn": {
+        "description": "Onboarding step 1 (Emp-Onboard-1). Legal name is confirmed here.",
+        "properties": {
+          "address": {
+            "$ref": "#/components/schemas/AddressIn"
+          },
+          "dob": {
+            "format": "date",
+            "title": "Dob",
+            "type": "string"
+          },
+          "first_name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Last Name",
+            "type": "string"
+          },
+          "ssn": {
+            "pattern": "^\\d{3}-?\\d{2}-?\\d{4}$",
+            "title": "Ssn",
+            "type": "string"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "dob",
+          "ssn",
+          "address"
+        ],
+        "title": "PersonalInfoIn",
+        "type": "object"
+      },
+      "ProfileOut": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AddressOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "company_name": {
+            "title": "Company Name",
+            "type": "string"
+          },
+          "deposit_account": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BankAccountOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dob": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dob"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "employee_number": {
+            "title": "Employee Number",
+            "type": "integer"
+          },
+          "end_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End Date"
+          },
+          "first_name": {
+            "title": "First Name",
+            "type": "string"
+          },
+          "is_former": {
+            "title": "Is Former",
+            "type": "boolean"
+          },
+          "job_title": {
+            "title": "Job Title",
+            "type": "string"
+          },
+          "last_name": {
+            "title": "Last Name",
+            "type": "string"
+          },
+          "ssn_last4": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ssn Last4"
+          },
+          "withholding": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WithholdingOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "employee_id",
+          "employee_number",
+          "first_name",
+          "last_name",
+          "email",
+          "job_title",
+          "company_name",
+          "dob",
+          "ssn_last4",
+          "address",
+          "withholding",
+          "deposit_account",
+          "is_former",
+          "end_date"
+        ],
+        "title": "ProfileOut",
+        "type": "object"
+      },
+      "RevealIn": {
+        "properties": {
+          "field": {
+            "enum": [
+              "ssn",
+              "bank_account_number"
+            ],
+            "title": "Field",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field"
+        ],
+        "title": "RevealIn",
+        "type": "object"
+      },
+      "RevealOut": {
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "value"
+        ],
+        "title": "RevealOut",
+        "type": "object"
+      },
+      "ReviewIn": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "title": "ReviewIn",
+        "type": "object"
+      },
+      "Role": {
+        "enum": [
+          "admin",
+          "payroll_manager",
+          "employee"
+        ],
+        "title": "Role",
+        "type": "string"
+      },
+      "RoleChangeIn": {
+        "properties": {
+          "role": {
+            "enum": [
+              "admin",
+              "payroll_manager",
+              "employee"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "title": "RoleChangeIn",
+        "type": "object"
+      },
+      "RunAction": {
+        "enum": [
+          "submit",
+          "return_to_draft",
+          "cancel",
+          "approve",
+          "start_processing",
+          "mark_paid",
+          "mark_failed",
+          "retry"
+        ],
+        "title": "RunAction",
+        "type": "string"
+      },
+      "RunBlocker": {
+        "description": "EMP-5: an employee left out of the run, and why.",
+        "properties": {
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing",
+            "type": "array"
+          }
+        },
+        "required": [
+          "employee_id",
+          "employee_name",
+          "missing"
+        ],
+        "title": "RunBlocker",
+        "type": "object"
+      },
+      "RunCreate": {
+        "description": "Regular: pay_period_id required. Bonus (P1, A-11): pay_date + bonus_items.\nCorrections and final paychecks are created by their own endpoints, not here.",
+        "properties": {
+          "bonus_items": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/BonusItemIn"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bonus Items"
+          },
+          "pay_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pay Date"
+          },
+          "pay_period_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pay Period Id"
+          },
+          "run_type": {
+            "enum": [
+              "regular",
+              "bonus"
+            ],
+            "title": "Run Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_type"
+        ],
+        "title": "RunCreate",
+        "type": "object"
+      },
+      "RunDetail": {
+        "properties": {
+          "allowed_actions": {
+            "items": {
+              "$ref": "#/components/schemas/RunAction"
+            },
+            "title": "Allowed Actions",
+            "type": "array"
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved At"
+          },
+          "approved_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved By Name"
+          },
+          "at_risk": {
+            "title": "At Risk",
+            "type": "boolean"
+          },
+          "blockers": {
+            "items": {
+              "$ref": "#/components/schemas/RunBlocker"
+            },
+            "title": "Blockers",
+            "type": "array"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By Name"
+          },
+          "cutoff_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutoff At"
+          },
+          "employee_count": {
+            "title": "Employee Count",
+            "type": "integer"
+          },
+          "failure_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Reason"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RunItemOut"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "original_run_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Run Id"
+          },
+          "paid_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paid At"
+          },
+          "pay_date": {
+            "format": "date",
+            "title": "Pay Date",
+            "type": "string"
+          },
+          "period_end": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period End"
+          },
+          "period_start": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Start"
+          },
+          "run_type": {
+            "$ref": "#/components/schemas/RunType"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RunState"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          },
+          "submitted_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted By Name"
+          },
+          "timesheets_unapproved": {
+            "title": "Timesheets Unapproved",
+            "type": "integer"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/RunTotals"
+          }
+        },
+        "required": [
+          "id",
+          "run_type",
+          "state",
+          "pay_date",
+          "period_start",
+          "period_end",
+          "cutoff_at",
+          "at_risk",
+          "employee_count",
+          "totals",
+          "original_run_id",
+          "created_at",
+          "submitted_at",
+          "approved_at",
+          "paid_at",
+          "items",
+          "blockers",
+          "timesheets_unapproved",
+          "allowed_actions",
+          "created_by_name",
+          "submitted_by_name",
+          "approved_by_name",
+          "failure_reason"
+        ],
+        "title": "RunDetail",
+        "type": "object"
+      },
+      "RunItemOut": {
+        "properties": {
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "employee_taxes_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employee Taxes Cents",
+            "type": "integer"
+          },
+          "employer_cost_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employer Cost Cents",
+            "type": "integer"
+          },
+          "employer_taxes": {
+            "$ref": "#/components/schemas/EmployerTaxLines"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_caller": {
+            "title": "Is Caller",
+            "type": "boolean"
+          },
+          "memo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memo"
+          },
+          "minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minutes"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          },
+          "pay_type": {
+            "$ref": "#/components/schemas/PayType"
+          },
+          "rate_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Rate Cents",
+            "type": "integer"
+          },
+          "taxes": {
+            "$ref": "#/components/schemas/TaxLines"
+          }
+        },
+        "required": [
+          "id",
+          "employee_id",
+          "employee_name",
+          "is_caller",
+          "pay_type",
+          "minutes",
+          "rate_cents",
+          "gross_cents",
+          "taxes",
+          "employee_taxes_cents",
+          "net_cents",
+          "employer_taxes",
+          "employer_cost_cents",
+          "memo"
+        ],
+        "title": "RunItemOut",
+        "type": "object"
+      },
+      "RunState": {
+        "description": "The 7-state machine (D7). Transitions live in app/payroll/states.py and nowhere else.",
+        "enum": [
+          "draft",
+          "submitted",
+          "approved",
+          "processing",
+          "paid",
+          "failed",
+          "cancelled"
+        ],
+        "title": "RunState",
+        "type": "string"
+      },
+      "RunSummary": {
+        "properties": {
+          "approved_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved At"
+          },
+          "at_risk": {
+            "title": "At Risk",
+            "type": "boolean"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "cutoff_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutoff At"
+          },
+          "employee_count": {
+            "title": "Employee Count",
+            "type": "integer"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "original_run_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Original Run Id"
+          },
+          "paid_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paid At"
+          },
+          "pay_date": {
+            "format": "date",
+            "title": "Pay Date",
+            "type": "string"
+          },
+          "period_end": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period End"
+          },
+          "period_start": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Start"
+          },
+          "run_type": {
+            "$ref": "#/components/schemas/RunType"
+          },
+          "state": {
+            "$ref": "#/components/schemas/RunState"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted At"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/RunTotals"
+          }
+        },
+        "required": [
+          "id",
+          "run_type",
+          "state",
+          "pay_date",
+          "period_start",
+          "period_end",
+          "cutoff_at",
+          "at_risk",
+          "employee_count",
+          "totals",
+          "original_run_id",
+          "created_at",
+          "submitted_at",
+          "approved_at",
+          "paid_at"
+        ],
+        "title": "RunSummary",
+        "type": "object"
+      },
+      "RunTotals": {
+        "properties": {
+          "company_cost_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Company Cost Cents",
+            "type": "integer"
+          },
+          "deductions_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Deductions Cents",
+            "type": "integer"
+          },
+          "employee_taxes_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employee Taxes Cents",
+            "type": "integer"
+          },
+          "employer_taxes_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Employer Taxes Cents",
+            "type": "integer"
+          },
+          "gross_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Gross Cents",
+            "type": "integer"
+          },
+          "net_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Net Cents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "gross_cents",
+          "employee_taxes_cents",
+          "deductions_cents",
+          "net_cents",
+          "employer_taxes_cents",
+          "company_cost_cents"
+        ],
+        "title": "RunTotals",
+        "type": "object"
+      },
+      "RunType": {
+        "enum": [
+          "regular",
+          "bonus",
+          "correction",
+          "final"
+        ],
+        "title": "RunType",
+        "type": "string"
+      },
+      "SeparationType": {
+        "enum": [
+          "involuntary",
+          "voluntary_with_notice",
+          "voluntary_without_notice"
+        ],
+        "title": "SeparationType",
+        "type": "string"
+      },
+      "SetupChecklist": {
+        "properties": {
+          "company_profile": {
+            "title": "Company Profile",
+            "type": "boolean"
+          },
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "funding_account": {
+            "title": "Funding Account",
+            "type": "boolean"
+          },
+          "pay_schedule": {
+            "title": "Pay Schedule",
+            "type": "boolean"
+          },
+          "team_invited": {
+            "title": "Team Invited",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "company_profile",
+          "funding_account",
+          "pay_schedule",
+          "team_invited",
+          "complete"
+        ],
+        "title": "SetupChecklist",
+        "type": "object"
+      },
+      "TaxLines": {
+        "properties": {
+          "ca_pit_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Ca Pit Cents",
+            "type": "integer"
+          },
+          "ca_sdi_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Ca Sdi Cents",
+            "type": "integer"
+          },
+          "fed_income_tax_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Fed Income Tax Cents",
+            "type": "integer"
+          },
+          "medicare_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Medicare Cents",
+            "type": "integer"
+          },
+          "social_security_cents": {
+            "description": "Integer cents. $12.34 is 1234.",
+            "title": "Social Security Cents",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "fed_income_tax_cents",
+          "social_security_cents",
+          "medicare_cents",
+          "ca_pit_cents",
+          "ca_sdi_cents"
+        ],
+        "title": "TaxLines",
+        "type": "object"
+      },
+      "TerminateIn": {
+        "properties": {
+          "end_date": {
+            "format": "date",
+            "title": "End Date",
+            "type": "string"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "separation_type": {
+            "$ref": "#/components/schemas/SeparationType"
+          }
+        },
+        "required": [
+          "end_date",
+          "separation_type"
+        ],
+        "title": "TerminateIn",
+        "type": "object"
+      },
+      "TerminateOut": {
+        "properties": {
+          "due_date_rule": {
+            "title": "Due Date Rule",
+            "type": "string"
+          },
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "final_pay_due_date": {
+            "format": "date",
+            "title": "Final Pay Due Date",
+            "type": "string"
+          },
+          "final_run_id": {
+            "format": "uuid",
+            "title": "Final Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "employee_id",
+          "final_run_id",
+          "final_pay_due_date",
+          "due_date_rule"
+        ],
+        "title": "TerminateOut",
+        "type": "object"
+      },
+      "TimeEntryIn": {
+        "properties": {
+          "minutes": {
+            "maximum": 1440.0,
+            "minimum": 0.0,
+            "title": "Minutes",
+            "type": "integer"
+          },
+          "work_date": {
+            "format": "date",
+            "title": "Work Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_date",
+          "minutes"
+        ],
+        "title": "TimeEntryIn",
+        "type": "object"
+      },
+      "TimeEntryOut": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "minutes": {
+            "maximum": 1440.0,
+            "minimum": 0.0,
+            "title": "Minutes",
+            "type": "integer"
+          },
+          "work_date": {
+            "format": "date",
+            "title": "Work Date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "work_date",
+          "minutes",
+          "id"
+        ],
+        "title": "TimeEntryOut",
+        "type": "object"
+      },
+      "TimesheetCounts": {
+        "properties": {
+          "approved": {
+            "title": "Approved",
+            "type": "integer"
+          },
+          "hourly_employees": {
+            "title": "Hourly Employees",
+            "type": "integer"
+          },
+          "open": {
+            "title": "Open",
+            "type": "integer"
+          },
+          "rejected": {
+            "title": "Rejected",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "hourly_employees",
+          "approved",
+          "open",
+          "rejected"
+        ],
+        "title": "TimesheetCounts",
+        "type": "object"
+      },
+      "TimesheetEntriesPut": {
+        "description": "Upsert by work_date. Every date must fall inside the timesheet's pay period and be <= today.",
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/TimeEntryIn"
+            },
+            "title": "Entries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "entries"
+        ],
+        "title": "TimesheetEntriesPut",
+        "type": "object"
+      },
+      "TimesheetOut": {
+        "properties": {
+          "editable": {
+            "title": "Editable",
+            "type": "boolean"
+          },
+          "employee_id": {
+            "format": "uuid",
+            "title": "Employee Id",
+            "type": "string"
+          },
+          "employee_name": {
+            "title": "Employee Name",
+            "type": "string"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/TimeEntryOut"
+            },
+            "title": "Entries",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "pay_period": {
+            "$ref": "#/components/schemas/PayPeriodOut"
+          },
+          "rate_cents": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate Cents"
+          },
+          "review_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Note"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "reviewed_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed By Name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TimesheetStatus"
+          },
+          "total_minutes": {
+            "title": "Total Minutes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "employee_id",
+          "employee_name",
+          "pay_period",
+          "status",
+          "entries",
+          "total_minutes",
+          "rate_cents",
+          "review_note",
+          "reviewed_by_name",
+          "reviewed_at",
+          "editable"
+        ],
+        "title": "TimesheetOut",
+        "type": "object"
+      },
+      "TimesheetStatus": {
+        "enum": [
+          "open",
+          "approved",
+          "rejected",
+          "locked"
+        ],
+        "title": "TimesheetStatus",
+        "type": "string"
+      },
+      "TransitionIn": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "title": "TransitionIn",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "VerifyRequest": {
+        "properties": {
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token"
+        ],
+        "title": "VerifyRequest",
+        "type": "object"
+      },
+      "WithholdingIn": {
+        "description": "Onboarding step 2 (Emp-Onboard-2). Simplified W-4 + DE 4 (D6).",
+        "properties": {
+          "ca_allowances": {
+            "default": 0,
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Ca Allowances",
+            "type": "integer"
+          },
+          "ca_extra_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Ca Extra Cents",
+            "type": "integer"
+          },
+          "ca_filing_status": {
+            "$ref": "#/components/schemas/CaFilingStatus"
+          },
+          "fed_dependents_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Fed Dependents Cents",
+            "type": "integer"
+          },
+          "fed_extra_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Fed Extra Cents",
+            "type": "integer"
+          },
+          "fed_filing_status": {
+            "$ref": "#/components/schemas/FedFilingStatus"
+          },
+          "fed_multiple_jobs": {
+            "default": false,
+            "title": "Fed Multiple Jobs",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "fed_filing_status",
+          "ca_filing_status"
+        ],
+        "title": "WithholdingIn",
+        "type": "object"
+      },
+      "WithholdingOut": {
+        "properties": {
+          "ca_allowances": {
+            "default": 0,
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Ca Allowances",
+            "type": "integer"
+          },
+          "ca_extra_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Ca Extra Cents",
+            "type": "integer"
+          },
+          "ca_filing_status": {
+            "$ref": "#/components/schemas/CaFilingStatus"
+          },
+          "effective_date": {
+            "format": "date",
+            "title": "Effective Date",
+            "type": "string"
+          },
+          "fed_dependents_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Fed Dependents Cents",
+            "type": "integer"
+          },
+          "fed_extra_cents": {
+            "default": 0,
+            "description": "Integer cents, >= 0.",
+            "minimum": 0.0,
+            "title": "Fed Extra Cents",
+            "type": "integer"
+          },
+          "fed_filing_status": {
+            "$ref": "#/components/schemas/FedFilingStatus"
+          },
+          "fed_multiple_jobs": {
+            "default": false,
+            "title": "Fed Multiple Jobs",
+            "type": "boolean"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "fed_filing_status",
+          "ca_filing_status",
+          "id",
+          "effective_date"
+        ],
+        "title": "WithholdingOut",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "Payroll MVP for CMPE 272. California W-2 only. All money is integer cents.",
+    "title": "Forte API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/audit": {
+      "get": {
+        "operationId": "list_audit_api_audit_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "entity_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "entity_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entity Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "action",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AuditEntryOut"
+                  },
+                  "title": "Response List Audit Api Audit Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Audit",
+        "tags": [
+          "audit"
+        ]
+      }
+    },
+    "/api/auth/dev/login": {
+      "post": {
+        "operationId": "dev_login_api_auth_dev_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DevLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Dev Login",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/dev/users": {
+      "get": {
+        "description": "Dev switcher: every user with their role, for one-click sign-in during rehearsals.",
+        "operationId": "dev_users_api_auth_dev_users_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DevUserOut"
+                  },
+                  "title": "Response Dev Users Api Auth Dev Users Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Dev Users",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "logout_api_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Logout",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/magic-link": {
+      "post": {
+        "operationId": "request_magic_link_api_auth_magic_link_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MagicLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MagicLinkAccepted"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Request Magic Link",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "description": "Works with or without a membership (a brand-new Admin has none until POST /api/companies).",
+        "operationId": "me_api_auth_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Me",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/auth/verify": {
+      "post": {
+        "operationId": "verify_magic_link_api_auth_verify_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Verify Magic Link",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/api/companies": {
+      "post": {
+        "description": "Caller must have no membership yet. Creates Company + ACTIVE ADMIN membership. EIN is stored\nencrypted with ein_last4. Audit COMPANY_CREATED.",
+        "operationId": "create_company_api_companies_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Company",
+        "tags": [
+          "company"
+        ]
+      }
+    },
+    "/api/company": {
+      "get": {
+        "operationId": "get_company_api_company_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Company",
+        "tags": [
+          "company"
+        ]
+      },
+      "patch": {
+        "operationId": "update_company_api_company_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Company",
+        "tags": [
+          "company"
+        ]
+      }
+    },
+    "/api/company/funding-account": {
+      "put": {
+        "description": "CO-2. Verify via BankVerifier; on success mark the previous company account REPLACED.\nOn failure return 422 code \"bank_verification_failed\" with the verifier's reason.",
+        "operationId": "set_funding_account_api_company_funding_account_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BankAccountIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccountOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Funding Account",
+        "tags": [
+          "company"
+        ]
+      }
+    },
+    "/api/company/pay-schedule": {
+      "put": {
+        "operationId": "set_pay_schedule_api_company_pay_schedule_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayScheduleIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PayPeriodOut"
+                  },
+                  "title": "Response Set Pay Schedule Api Company Pay Schedule Put",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Pay Schedule",
+        "tags": [
+          "company"
+        ]
+      }
+    },
+    "/api/corrections": {
+      "get": {
+        "operationId": "list_corrections_api_corrections_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "employee_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Employee Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CorrectionOut"
+                  },
+                  "title": "Response List Corrections Api Corrections Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Corrections",
+        "tags": [
+          "corrections"
+        ]
+      },
+      "post": {
+        "operationId": "create_correction_api_corrections_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorrectionOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Correction",
+        "tags": [
+          "corrections"
+        ]
+      }
+    },
+    "/api/corrections/preview": {
+      "post": {
+        "operationId": "preview_correction_api_corrections_preview_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorrectionPreview"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Preview Correction",
+        "tags": [
+          "corrections"
+        ]
+      }
+    },
+    "/api/dashboard": {
+      "get": {
+        "operationId": "dashboard_api_dashboard_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Dashboard",
+        "tags": [
+          "dashboard"
+        ]
+      }
+    },
+    "/api/employees": {
+      "get": {
+        "operationId": "list_employees_api_employees_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EmployeeListItem"
+                  },
+                  "title": "Response List Employees Api Employees Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Employees",
+        "tags": [
+          "employees"
+        ]
+      },
+      "post": {
+        "operationId": "create_employee_api_employees_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployeeCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Employee",
+        "tags": [
+          "employees"
+        ]
+      }
+    },
+    "/api/employees/{employee_id}": {
+      "get": {
+        "operationId": "get_employee_api_employees__employee_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Employee",
+        "tags": [
+          "employees"
+        ]
+      },
+      "patch": {
+        "operationId": "update_employee_api_employees__employee_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployeeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Employee",
+        "tags": [
+          "employees"
+        ]
+      }
+    },
+    "/api/employees/{employee_id}/compensations": {
+      "get": {
+        "operationId": "list_compensations_api_employees__employee_id__compensations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CompensationOut"
+                  },
+                  "title": "Response List Compensations Api Employees  Employee Id  Compensations Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Compensations",
+        "tags": [
+          "employees"
+        ]
+      },
+      "post": {
+        "operationId": "add_compensation_api_employees__employee_id__compensations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompensationIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompensationOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Compensation",
+        "tags": [
+          "employees"
+        ]
+      }
+    },
+    "/api/employees/{employee_id}/reveal": {
+      "post": {
+        "operationId": "reveal_sensitive_api_employees__employee_id__reveal_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevealIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevealOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reveal Sensitive",
+        "tags": [
+          "employees"
+        ]
+      }
+    },
+    "/api/employees/{employee_id}/terminate": {
+      "post": {
+        "operationId": "terminate_employee_api_employees__employee_id__terminate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employee_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Employee Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TerminateIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TerminateOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Terminate Employee",
+        "tags": [
+          "employees"
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Health Api Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/api/me/bank-account": {
+      "put": {
+        "operationId": "set_bank_account_api_me_bank_account_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BankAccountIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccountOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Bank Account",
+        "tags": [
+          "me"
+        ]
+      }
+    },
+    "/api/me/home": {
+      "get": {
+        "operationId": "my_home_api_me_home_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "My Home",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/me/paystubs": {
+      "get": {
+        "description": "Previews first, then final stubs newest first.",
+        "operationId": "my_paystubs_api_me_paystubs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PaystubSummary"
+                  },
+                  "title": "Response My Paystubs Api Me Paystubs Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "My Paystubs",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/me/paystubs/{item_id}": {
+      "get": {
+        "operationId": "my_paystub_api_me_paystubs__item_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaystubDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "My Paystub",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/me/paystubs/{item_id}/pdf": {
+      "get": {
+        "operationId": "paystub_pdf_link_api_me_paystubs__item_id__pdf_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaystubPdfLink"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Paystub Pdf Link",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/me/paystubs/{item_id}/pdf/file": {
+      "get": {
+        "operationId": "paystub_pdf_file_api_me_paystubs__item_id__pdf_file_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/pdf": {}
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Paystub Pdf File",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/me/personal": {
+      "put": {
+        "operationId": "set_personal_info_api_me_personal_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalInfoIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Personal Info",
+        "tags": [
+          "me"
+        ]
+      }
+    },
+    "/api/me/profile": {
+      "get": {
+        "operationId": "get_profile_api_me_profile_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Profile",
+        "tags": [
+          "me"
+        ]
+      }
+    },
+    "/api/me/timesheet": {
+      "get": {
+        "operationId": "my_timesheet_api_me_timesheet_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimesheetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "My Timesheet",
+        "tags": [
+          "timesheets"
+        ]
+      }
+    },
+    "/api/me/timesheet/entries": {
+      "put": {
+        "operationId": "put_my_entries_api_me_timesheet_entries_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TimesheetEntriesPut"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimesheetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put My Entries",
+        "tags": [
+          "timesheets"
+        ]
+      }
+    },
+    "/api/me/withholding": {
+      "put": {
+        "operationId": "set_withholding_api_me_withholding_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithholdingIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WithholdingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Set Withholding",
+        "tags": [
+          "me"
+        ]
+      }
+    },
+    "/api/members": {
+      "get": {
+        "operationId": "list_members_api_members_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MemberOut"
+                  },
+                  "title": "Response List Members Api Members Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Members",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/api/members/invite": {
+      "post": {
+        "operationId": "invite_member_api_members_invite_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Invite Member",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/api/members/{membership_id}": {
+      "delete": {
+        "operationId": "remove_member_api_members__membership_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "membership_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Membership Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Member",
+        "tags": [
+          "members"
+        ]
+      },
+      "patch": {
+        "operationId": "change_role_api_members__membership_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "membership_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Membership Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleChangeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Change Role",
+        "tags": [
+          "members"
+        ]
+      }
+    },
+    "/api/pay-periods": {
+      "get": {
+        "description": "Upcoming + recent periods, newest pay_date last, with each period's regular run id/state.",
+        "operationId": "list_pay_periods_api_pay_periods_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PayPeriodOut"
+                  },
+                  "title": "Response List Pay Periods Api Pay Periods Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Pay Periods",
+        "tags": [
+          "company"
+        ]
+      }
+    },
+    "/api/paystubs/{item_id}": {
+      "get": {
+        "operationId": "staff_paystub_api_paystubs__item_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaystubDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Staff Paystub",
+        "tags": [
+          "paystubs"
+        ]
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "description": "Newest pay_date first. Also serves payroll history (REP-1).",
+        "operationId": "list_runs_api_runs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "run_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RunType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RunState"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RunSummary"
+                  },
+                  "title": "Response List Runs Api Runs Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Runs",
+        "tags": [
+          "runs"
+        ]
+      },
+      "post": {
+        "operationId": "create_run_api_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}": {
+      "get": {
+        "operationId": "get_run_api_runs__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/approve": {
+      "post": {
+        "operationId": "approve_run_api_runs__run_id__approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Approve Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancel_run_api_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/recalculate": {
+      "post": {
+        "operationId": "recalculate_run_api_runs__run_id__recalculate_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Recalculate Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/retry": {
+      "post": {
+        "operationId": "retry_run_api_runs__run_id__retry_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retry Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/return-to-draft": {
+      "post": {
+        "operationId": "return_run_to_draft_api_runs__run_id__return_to_draft_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Return Run To Draft",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/runs/{run_id}/submit": {
+      "post": {
+        "operationId": "submit_run_api_runs__run_id__submit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitionIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit Run",
+        "tags": [
+          "runs"
+        ]
+      }
+    },
+    "/api/timesheets": {
+      "get": {
+        "description": "Defaults to the open period. One row per active hourly employee (sheet created lazily).",
+        "operationId": "list_timesheets_api_timesheets_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pay_period_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pay Period Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TimesheetOut"
+                  },
+                  "title": "Response List Timesheets Api Timesheets Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Timesheets",
+        "tags": [
+          "timesheets"
+        ]
+      }
+    },
+    "/api/timesheets/{timesheet_id}/approve": {
+      "post": {
+        "operationId": "approve_timesheet_api_timesheets__timesheet_id__approve_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "timesheet_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Timesheet Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimesheetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Approve Timesheet",
+        "tags": [
+          "timesheets"
+        ]
+      }
+    },
+    "/api/timesheets/{timesheet_id}/reject": {
+      "post": {
+        "operationId": "reject_timesheet_api_timesheets__timesheet_id__reject_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "timesheet_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Timesheet Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimesheetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Reject Timesheet",
+        "tags": [
+          "timesheets"
+        ]
+      }
+    },
+    "/api/webhooks/payments": {
+      "post": {
+        "operationId": "payments_webhook_api_webhooks_payments_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Payments Webhook Api Webhooks Payments Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Payments Webhook",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    }
+  }
+}

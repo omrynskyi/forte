@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Check your email</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;padding:32px 24px 40px;background:var(--paper);color:var(--ink);font-family:var(--font-text);overflow:hidden">
+
+  <span style="font-family:var(--font-display);font-weight:500;font-size:32px;line-height:36px;letter-spacing:-0.02em">Forté</span>
+
+  <div style="display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="ft-eyebrow">Sign in</p>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Check your email.</h1>
+      <p style="margin:0;font-size:20px;line-height:28px;color:var(--ink-soft)">If that email has an account, we sent a sign-in link to devon@larkspurbakery.example.</p>
+      <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">Open it on this phone and you're in. The link works once and expires in 15 minutes.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+      <x-import component-from-global-scope="Forte.Button" variant="secondary">Send it again</x-import>
+      <x-import component-from-global-scope="Forte.Button" variant="quiet">Use a passkey instead</x-import>
+    </div>
+  </div>
+
+  <p style="margin:0;font-size:13px;line-height:18px;color:var(--ink-muted)">There's no password to remember. Sandbox. No real money moves.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

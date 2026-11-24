@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin home</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit;text-decoration:none}
+.nav{display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:12px;font-size:16px;color:var(--ink-soft)}
+.nav:hover{background:var(--track)}
+.nav-on{background:var(--track);color:var(--ink);font-weight:700}
+.fig{font-family:var(--font-display);font-weight:600;font-size:40px;line-height:44px;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--line)}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:1000px;background:var(--paper);color:var(--ink);font-family:var(--font-text)">
+
+  <nav aria-label="Main" style="flex:0 0 248px;box-sizing:border-box;padding:32px 24px;display:flex;flex-direction:column;gap:32px;background:var(--paper-alt);border-right:1px solid var(--line)">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-family:var(--font-display);font-weight:500;font-size:32px;line-height:36px;letter-spacing:-0.02em">Forté</span>
+      <span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Larkspur Bakery</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <a class="nav nav-on" href="Admin-Home.dc.html" aria-current="page">Home</a>
+      <a class="nav" href="Admin-Approve.dc.html">Payroll</a>
+      <a class="nav" href="Mgr-Timesheets.dc.html">Timesheets</a>
+      <a class="nav" href="Admin-Team.dc.html">Team and roles</a>
+      <a class="nav" href="Admin-History.dc.html">History and reports</a>
+      <a class="nav" href="Admin-Setup.dc.html">Company setup</a>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:18px;color:var(--ink-muted)">
+      <span style="font-size:14px;font-weight:700;color:var(--ink)">Isabel Moreno</span>
+      <span>Admin</span>
+      <span>Sandbox. No real money moves.</span>
+    </div>
+  </nav>
+
+  <main style="flex:999 1 560px;min-width:0;box-sizing:border-box;padding:48px 64px;display:flex;flex-direction:column;gap:48px">
+
+    <header style="display:flex;flex-direction:column;gap:8px">
+      <p class="ft-eyebrow">Home</p>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Payroll for November 13</h1>
+      <p style="margin:0;font-size:20px;line-height:28px;color:var(--ink-soft)">Your team is paid on Friday. Ana has prepared the run and it's waiting for you.</p>
+    </header>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:24px">
+      <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:linear-gradient(135deg,var(--tile-top),var(--tile-bottom));color:var(--on-tile);display:flex;flex-direction:column;gap:12px;justify-content:space-between">
+        <p style="margin:0;font-size:12px;line-height:16px;letter-spacing:0.12em;text-transform:uppercase;color:var(--on-tile-soft)">Approve by Wednesday, Nov 11 at 5:00 PM Pacific</p>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:56px;line-height:60px;letter-spacing:-0.02em">2 days, 6 hours</div>
+        <p style="margin:0;font-size:16px;line-height:24px;color:var(--on-tile-soft)">left to approve. Pay lands in your team's accounts on Friday, Nov 13.</p>
+      </section>
+
+      <x-import component-from-global-scope="Forte.Card" tone="raised" eyebrow="Where this run is">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <x-import component-from-global-scope="Forte.StatusPill">Draft</x-import>
+          <x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Submitted</x-import>
+          <x-import component-from-global-scope="Forte.StatusPill">Approved</x-import>
+          <x-import component-from-global-scope="Forte.StatusPill">Paid</x-import>
+        </div>
+        <p style="margin:16px 0 24px;font-size:13px;line-height:18px;color:var(--ink-muted)">Ana Lindqvist submitted this run on Nov 9 at 9:12 AM. Hours are locked.</p>
+        <x-import component-from-global-scope="Forte.Button" variant="primary">Review and approve</x-import>
+      </x-import>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:24px">
+      <x-import component-from-global-scope="Forte.Card" tone="muted" eyebrow="Net pay to your team">
+        <div class="fig">$10,910.97</div>
+        <p style="margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-muted)">For 6 people. Gross pay is $13,359.00.</p>
+      </x-import>
+      <x-import component-from-global-scope="Forte.Card" tone="muted" eyebrow="Timesheets">
+        <p>All 3 hourly timesheets are approved and locked.</p>
+      </x-import>
+      <x-import component-from-global-scope="Forte.Card" tone="muted" eyebrow="Onboarding">
+        <p>Rosa Delgado hasn't finished onboarding, so they're left out of this run.</p>
+      </x-import>
+    </div>
+
+    <section style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;padding-bottom:12px;border-bottom:2px solid var(--ink)">
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Recent activity</h2>
+        <a href="Admin-History.dc.html" style="font-size:14px;font-weight:700;text-decoration:underline;text-underline-offset:3px">See the full history</a>
+      </div>
+      <div class="row"><span>Ana Lindqvist submitted payroll for Nov 13.</span><span style="font-size:13px;color:var(--ink-muted)">Nov 9, 9:12 AM</span></div>
+      <div class="row"><span>Ana Lindqvist approved Tomas Weber's timesheet.</span><span style="font-size:13px;color:var(--ink-muted)">Nov 9, 9:04 AM</span></div>
+      <div class="row"><span>Devon Park changed direct deposit. It's held until Nov 12.</span><span style="font-size:13px;color:var(--ink-muted)">Nov 9, 8:15 AM</span></div>
+      <div class="row"><span>Ana Lindqvist set Jun Okafor's pay to $20.00 an hour from Nov 16.</span><span style="font-size:13px;color:var(--ink-muted)">Nov 5, 11:20 AM</span></div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

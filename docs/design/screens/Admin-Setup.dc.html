@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Company setup</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+.field{display:block;box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+.lbl{display:block;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.hint{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-muted)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="min-height:2100px;background:var(--paper);color:var(--ink);font-family:var(--font-text)">
+
+  <header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:24px 64px;border-bottom:1px solid var(--line)">
+    <span style="font-family:var(--font-display);font-weight:500;font-size:32px;line-height:36px;letter-spacing:-0.02em">Forté</span>
+    <span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Sandbox. No real money moves.</span>
+  </header>
+
+  <main style="box-sizing:border-box;max-width:920px;margin:0 auto;padding:64px 24px;display:flex;flex-direction:column;gap:48px">
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <p class="ft-eyebrow">Company setup</p>
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Set up Larkspur Bakery.</h1>
+      <p style="margin:0;font-size:20px;line-height:28px;color:var(--ink-soft)">Five short steps. You're the Admin, so you're the only one who can approve payroll.</p>
+    </div>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Step 1 of 5</p>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Your company</h2>
+        <p style="margin:0;color:var(--ink-soft)">This is how your business appears on every paystub.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px">
+        <div>
+          <label class="lbl" for="legal">Legal name</label>
+          <input class="field" id="legal" type="text" value="Larkspur Bakery, Inc.">
+        </div>
+        <div>
+          <label class="lbl" for="ein">EIN</label>
+          <input class="field" id="ein" type="text" value="84-1234567">
+          <p class="hint">Nine digits. We encrypt it and only show the last four.</p>
+        </div>
+        <div>
+          <label class="lbl" for="street">Street address</label>
+          <input class="field" id="street" type="text" value="1180 Alder Street">
+        </div>
+        <div>
+          <label class="lbl" for="city">City</label>
+          <input class="field" id="city" type="text" value="San Jose">
+        </div>
+        <div>
+          <label class="lbl" for="state">State</label>
+          <input class="field" id="state" type="text" value="California" readonly>
+          <p class="hint">Forté supports California only for now.</p>
+        </div>
+        <div>
+          <label class="lbl" for="zip">ZIP code</label>
+          <input class="field" id="zip" type="text" value="95112">
+        </div>
+        <div>
+          <label class="lbl" for="edd">EDD employer account number</label>
+          <input class="field" id="edd" type="text" value="123-4567-8">
+          <p class="hint">From your EDD registration. We use it on tax filings.</p>
+        </div>
+        <div>
+          <label class="lbl" for="ui">Unemployment insurance rate</label>
+          <input class="field" id="ui" type="text" value="3.4%">
+          <p class="hint">New California employers start at 3.4%. If EDD gave you a different rate, enter it.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Step 2 of 5</p>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Funding bank account</h2>
+        <p style="margin:0;color:var(--ink-soft)">This is the account payroll is paid from. Money only moves after you approve a run.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px">
+        <div style="box-sizing:border-box;width:220px;padding:20px 24px;border:2px dashed var(--mark);border-radius:12px;background:var(--paper-alt);display:flex;flex-direction:column;gap:4px">
+          <span style="font-weight:700">Your bank</span>
+          <span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Outside Forté</span>
+        </div>
+        <svg width="56" height="24" viewBox="0 0 56 24" fill="none" stroke="var(--mark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h50"></path><path d="M44 5l8 7-8 7"></path></svg>
+        <div style="box-sizing:border-box;width:220px;padding:20px 24px;border:2px solid var(--ink);border-radius:12px;background:var(--card);display:flex;flex-direction:column;gap:4px">
+          <span style="font-weight:700">Forté</span>
+          <span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Pays your team</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px">
+        <x-import component-from-global-scope="Forte.Button" variant="secondary">Connect your bank</x-import>
+        <x-import component-from-global-scope="Forte.StatusPill">Not connected</x-import>
+      </div>
+    </section>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Step 3 of 5</p>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Pay schedule</h2>
+        <p style="margin:0;color:var(--ink-soft)">Pick how often you pay. You approve each run before it processes.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px">
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="sched" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">Every week</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Paid every Friday.</span></span>
+        </label>
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:15px;border:2px solid var(--ink);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="sched" checked="{{yes}}" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">Every two weeks</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Paid every other Friday.</span></span>
+        </label>
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="sched" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">Twice a month</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Paid on the 15th and the last day.</span></span>
+        </label>
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="sched" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">Monthly</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Paid on the last day of the month.</span></span>
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px">
+        <div>
+          <label class="lbl" for="first">First pay date</label>
+          <input class="field" id="first" type="text" value="Friday, Nov 13, 2026">
+        </div>
+        <div>
+          <label class="lbl" for="deadline">Approve payroll by</label>
+          <select class="field" id="deadline"><option>2 days before pay date, 5:00 PM Pacific</option><option>1 day before pay date, 5:00 PM Pacific</option><option>3 days before pay date, 5:00 PM Pacific</option></select>
+          <p class="hint">You'll see a countdown to this deadline on your home screen, in Pacific time. If payday lands on a bank holiday, we move it to the day before and tell you why.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Step 4 of 5</p>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Invite your team</h2>
+        <p style="margin:0;color:var(--ink-soft)">Payroll Managers prepare payroll. Employees see their own pay. You can add more people later.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:24px">
+        <div>
+          <label class="lbl" for="inv1">Email</label>
+          <input class="field" id="inv1" type="email" value="ana@larkspurbakery.example">
+        </div>
+        <div>
+          <label class="lbl" for="role1">Role</label>
+          <select class="field" id="role1"><option>Payroll Manager</option><option>Employee</option></select>
+        </div>
+        <div>
+          <label class="lbl" for="inv2">Email</label>
+          <input class="field" id="inv2" type="email" value="marisol@larkspurbakery.example">
+        </div>
+        <div>
+          <label class="lbl" for="role2">Role</label>
+          <select class="field" id="role2"><option>Employee</option><option>Payroll Manager</option></select>
+        </div>
+      </div>
+      <div style="display:flex">
+        <x-import component-from-global-scope="Forte.Button" variant="quiet">Add another person</x-import>
+      </div>
+    </section>
+
+    <section style="box-sizing:border-box;padding:32px;border-radius:16px;background:var(--paper-alt);display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Step 5 of 5</p>
+        <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px">Pay already made this year</h2>
+        <p style="margin:0;color:var(--ink-soft)">Switching from another provider? Tell us what each person has earned so far this year. We use it for wage limits, like the $7,000 unemployment insurance base and the Social Security cap, and for the W-2.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px">
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:15px;border:2px solid var(--ink);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="ytd" checked="{{yes}}" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">Yes, we switched this year</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Enter what each person has been paid so far.</span></span>
+        </label>
+        <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);cursor:pointer">
+          <input type="radio" name="ytd" style="margin:4px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+          <span style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">No, Forté is our first payroll</span><span style="font-size:13px;line-height:18px;color:var(--ink-muted)">Everyone starts the year at zero.</span></span>
+        </label>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(140px,1.2fr) repeat(2,minmax(0,1fr));gap:12px 16px;align-items:center">
+        <span class="ft-eyebrow">Employee</span><span class="ft-eyebrow">Wages so far</span><span class="ft-eyebrow">Taxes withheld so far</span>
+        <strong>Marisol Vega</strong><input class="field" type="text" placeholder="$0.00" aria-label="Marisol Vega, wages paid so far"><input class="field" type="text" placeholder="$0.00" aria-label="Marisol Vega, taxes withheld so far">
+        <strong>Devon Park</strong><input class="field" type="text" placeholder="$0.00" aria-label="Devon Park, wages paid so far"><input class="field" type="text" placeholder="$0.00" aria-label="Devon Park, taxes withheld so far">
+        <strong>Priya Raman</strong><input class="field" type="text" placeholder="$0.00" aria-label="Priya Raman, wages paid so far"><input class="field" type="text" placeholder="$0.00" aria-label="Priya Raman, taxes withheld so far">
+      </div>
+      <div style="display:flex">
+        <x-import component-from-global-scope="Forte.Button" variant="quiet">Show all 6 people</x-import>
+      </div>
+    </section>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:24px">
+      <x-import component-from-global-scope="Forte.Button" variant="primary">Finish setup</x-import>
+      <x-import component-from-global-scope="Forte.Button" variant="quiet">Save and finish later</x-import>
+      <p class="hint" style="margin:0">You can change any of this later in Company setup.</p>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Former employee</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+.stub{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:72px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sub{font-size:13px;line-height:18px;color:var(--ink-muted)}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--font-text);overflow:hidden">
+
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:32px 24px 24px;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span style="font-family:var(--font-display);font-weight:500;font-size:24px;line-height:28px;letter-spacing:-0.02em">Forté</span>
+      <h1 style="margin:16px 0 0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Your documents.</h1>
+      <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">Your time at Larkspur Bakery ended Sep 25, 2026. You can still read and download everything here.</p>
+    </div>
+
+    <section style="display:flex;flex-direction:column">
+      <h2 style="margin:0;padding-bottom:12px;border-bottom:2px solid var(--ink);font-family:var(--font-display);font-weight:500;font-size:20px;line-height:24px">Paystubs</h2>
+      <div class="stub">
+        <span style="display:flex;flex-direction:column;gap:6px;align-items:flex-start"><strong>Sep 25</strong><x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Final paycheck</x-import></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-variant-numeric:tabular-nums;font-weight:700">$2,038.15</span><x-import component-from-global-scope="Forte.Button" variant="secondary" size="sm" aria-label="Download paystub for Sep 25">Download</x-import></span>
+      </div>
+      <div class="stub">
+        <span style="display:flex;flex-direction:column;gap:2px"><strong>Sep 11</strong><span class="sub">Paid</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-variant-numeric:tabular-nums;font-weight:700">$1,689.90</span><x-import component-from-global-scope="Forte.Button" variant="secondary" size="sm" aria-label="Download paystub for Sep 11">Download</x-import></span>
+      </div>
+      <div class="stub">
+        <span style="display:flex;flex-direction:column;gap:2px"><strong>Aug 28</strong><span class="sub">Paid</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-variant-numeric:tabular-nums;font-weight:700">$1,702.35</span><x-import component-from-global-scope="Forte.Button" variant="secondary" size="sm" aria-label="Download paystub for Aug 28">Download</x-import></span>
+      </div>
+    </section>
+
+    <x-import component-from-global-scope="Forte.Card" tone="muted" eyebrow="Tax forms" title="Your W-2">
+      <p>Your W-2 for 2026 will show up here in January, ready to download.</p>
+    </x-import>
+
+    <div style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--line)">
+      <p style="margin:0;font-size:13px;line-height:18px;color:var(--ink-muted)">Your details are read-only now. To change something, contact Larkspur Bakery.</p>
+      <p style="margin:0;font-size:13px;line-height:18px;color:var(--ink-muted)">You sign in with your personal email, sam.whitfield@personal.example.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

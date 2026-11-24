@@ -1,0 +1,21 @@
+:root {
+  --paper: #fbfbfa; --paper-alt: #f2f2f0; --card: #fffffe; --track: #ededea;
+  --line: #d6d6d3; --line-soft: #e2e2df;
+  --ink: #1e1e1e; --ink-soft: #4a4a4a; --ink-muted: #6e6e6e; --mark: #7a7a78; --on-ink: #f5f5f3;
+  --tile-top: #222222; --tile-bottom: #585858; --on-tile: #f5f5f3; --on-tile-soft: #dcdcd9;
+  --font-display: "MuseoModerno", Arial, sans-serif;
+  --font-text: "Sen", Arial, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px;
+  --space-8: 32px; --space-12: 48px; --space-16: 64px;
+  --radius-sm: 12px; --radius-md: 16px; --radius-lg: 20px; --radius-pill: 9999px;
+  --shadow-card: 0 16px 40px #1e1e1e1a;
+  --focus-ring: 0 0 0 2px #fbfbfa, 0 0 0 4px #1e1e1e;
+}
+:root[data-theme="dark"] {
+  --paper: #161616; --paper-alt: #1e1e1e; --card: #262626; --track: #2c2c2c;
+  --line: #3a3a3a; --line-soft: #303030;
+  --ink: #f5f5f3; --ink-soft: #dcdcd9; --ink-muted: #a3a3a0; --mark: #8e8e8b; --on-ink: #1e1e1e;
+  --tile-top: #333333; --tile-bottom: #5e5e5e;
+  --shadow-card: 0 16px 40px #000000b3;
+  --focus-ring: 0 0 0 2px #161616, 0 0 0 4px #f5f5f3;
+}

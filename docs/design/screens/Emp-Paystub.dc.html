@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Paystub preview</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit;text-decoration:none}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:56px;border-radius:12px;font-size:12px;line-height:16px;color:var(--ink-muted)}
+.tab-on{color:var(--ink);font-weight:700}
+.kv{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font-size:13px;line-height:18px}
+.kv span:first-child{color:var(--ink-muted)}
+a:focus-visible,button:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--font-text);overflow:hidden">
+
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:24px 24px 24px;display:flex;flex-direction:column;gap:24px">
+    <a href="Emp-Paystubs.dc.html" style="display:inline-flex;align-items:center;gap:4px;min-height:44px;margin-left:-4px;font-size:14px;font-weight:700"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>Paystubs</a>
+
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Pay for Nov 13</h1>
+      <x-import component-from-global-scope="Forte.StatusPill" current="{{yes}}">Preview</x-import>
+      <p style="margin:0;font-size:14px;line-height:20px;color:var(--ink-soft)">This is a preview. It becomes final once payroll is approved.</p>
+    </div>
+
+    <section style="display:flex;flex-direction:column;gap:6px;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+      <div class="kv"><span>Employer</span><span style="text-align:right">Larkspur Bakery, Inc.<br>1180 Alder Street, San Jose, CA 95112</span></div>
+      <div class="kv"><span>Employee</span><span>Devon Park</span></div>
+      <div class="kv"><span>Employee ID</span><span>LB-0004</span></div>
+      <div class="kv"><span>Social Security</span><span>Ending 4821</span></div>
+    </section>
+
+    <x-import component-from-global-scope="Forte.Paystub" label="Paystub preview" period="Oct 26 to Nov 8, 2026" gross-cents="{{gross}}" lines="{{stubLines}}"></x-import>
+
+    <section style="display:flex;flex-direction:column;gap:12px">
+      <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">You earned $1,960.00 for 80.0 hours at $24.50 an hour. $359.17 went to taxes and the disability fund. You take home $1,600.83.</p>
+      <p style="margin:0;font-size:13px;line-height:18px;color:var(--ink-muted)">Sent to Checking ending 3347 on Friday, Nov 13.</p>
+    </section>
+
+    <div style="display:flex">
+      <x-import component-from-global-scope="Forte.Button" variant="secondary">Download PDF</x-import>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="display:flex;padding:8px 8px 16px;border-top:1px solid var(--line);background:var(--paper)">
+    <a class="tab" href="Emp-Home.dc.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>Home</a>
+    <a class="tab" href="Emp-Hours.dc.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Hours</a>
+    <a class="tab tab-on" href="Emp-Paystubs.dc.html" aria-current="page"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h8"></path></svg>Paystubs</a>
+    <a class="tab" href="Emp-Deposit.dc.html"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>Account</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      yes: true,
+      gross: 196000,
+      stubLines: [
+        { label: 'Federal income tax', note: 'Based on your W-4', amountCents: 12640 },
+        { label: 'Social Security', note: '6.2% of what you earned', amountCents: 12152 },
+        { label: 'Medicare', note: '1.45% of what you earned', amountCents: 2842 },
+        { label: 'California income tax', note: 'Based on your DE 4 and California rules', amountCents: 5735 },
+        { label: 'California disability insurance', note: "Paid into the state's disability fund", amountCents: 2548 }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

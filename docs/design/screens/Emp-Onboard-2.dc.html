@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Onboarding, taxes</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+.field{display:block;box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+.lbl{display:block;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.hint{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-muted)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--font-text);overflow:hidden">
+
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:32px 24px 24px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="ft-eyebrow">Step 2 of 3</p>
+      <div style="display:flex;gap:8px" aria-hidden="true">
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--ink)"></span>
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--ink)"></span>
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--track)"></span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">How much tax to take out.</h1>
+      <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">These answers match the federal W-4 and California's DE 4. We use them to work out your income tax. You can change them any time.</p>
+    </div>
+
+    <fieldset style="margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:12px">
+      <legend style="padding:0;margin-bottom:12px;font-size:14px;font-weight:700">Filing status</legend>
+      <label style="display:flex;gap:12px;align-items:flex-start;padding:15px;border:2px solid var(--ink);border-radius:12px;background:var(--card)">
+        <input type="radio" name="fs" checked="{{yes}}" style="margin:3px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+        <span style="font-weight:700">Single or married filing separately</span>
+      </label>
+      <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)">
+        <input type="radio" name="fs" style="margin:3px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+        <span style="font-weight:700">Married filing jointly</span>
+      </label>
+      <label style="display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)">
+        <input type="radio" name="fs" style="margin:3px 0 0;width:20px;height:20px;accent-color:var(--ink)">
+        <span style="font-weight:700">Head of household</span>
+      </label>
+    </fieldset>
+
+    <div>
+      <label class="lbl" for="extra">Extra tax to take out each paycheck</label>
+      <input class="field" id="extra" type="text" value="$0.00">
+      <p class="hint">Optional. Leave it at zero if you're not sure.</p>
+    </div>
+  </div>
+
+  <div style="padding:16px 24px 24px;border-top:1px solid var(--line);display:flex;gap:12px;align-items:center">
+    <x-import component-from-global-scope="Forte.Button" variant="primary">Continue</x-import>
+    <x-import component-from-global-scope="Forte.Button" variant="quiet">Back</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return { yes: true }; }
+}
+</script>
+</body>
+</html>

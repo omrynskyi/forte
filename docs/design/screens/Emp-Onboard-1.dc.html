@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Onboarding, address</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+.field{display:block;box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+.lbl{display:block;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.hint{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-muted)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="width:390px;height:844px;box-sizing:border-box;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);font-family:var(--font-text);overflow:hidden">
+
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:32px 24px 24px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="ft-eyebrow">Step 1 of 3</p>
+      <div style="display:flex;gap:8px" aria-hidden="true">
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--ink)"></span>
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--track)"></span>
+        <span style="flex:1;height:4px;border-radius:2px;background:var(--track)"></span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Hi Rosa. Let's get you set up.</h1>
+      <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">Three short steps. Larkspur Bakery can't pay you until they're done.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div>
+        <label class="lbl" for="street">Home address</label>
+        <input class="field" id="street" type="text" value="2207 Tully Road">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 120px;gap:12px">
+        <div><label class="lbl" for="city">City</label><input class="field" id="city" type="text" value="San Jose"></div>
+        <div><label class="lbl" for="zip">ZIP</label><input class="field" id="zip" type="text" value="95122"></div>
+      </div>
+      <div>
+        <label class="lbl" for="ssn">Social Security number</label>
+        <input class="field" id="ssn" type="text" value="•••-••-4821" readonly>
+        <p class="hint">We encrypt it. Only your Admin and the Payroll Managers who run payroll can see it, and every view is logged.</p>
+      </div>
+      <div>
+        <label class="lbl" for="pe">Personal email</label>
+        <input class="field" id="pe" type="email" value="rosa.delgado@personal.example">
+        <p class="hint">If you ever leave, this is how you sign in to see your paystubs and W-2.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:16px 24px 24px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+    <x-import component-from-global-scope="Forte.Button" variant="primary">Continue</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

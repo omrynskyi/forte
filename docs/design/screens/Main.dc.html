@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="forte-tokens.css">
+<link rel="stylesheet" href="ds/forte/components/bundle.css">
+<script src="ds/forte/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500;600&family=Sen:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--paper)}
+a{color:inherit}
+.field{display:block;box-sizing:border-box;width:100%;height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:16px}
+.lbl{display:block;margin-bottom:8px;font-size:14px;font-weight:700;color:var(--ink)}
+.hint{margin:8px 0 0;font-size:13px;line-height:18px;color:var(--ink-muted)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+</style>
+</helmet>
+<div style="display:flex;flex-wrap:wrap;min-height:820px;background:var(--paper);color:var(--ink);font-family:var(--font-text)">
+
+  <section style="flex:1 1 480px;box-sizing:border-box;padding:64px;display:flex;flex-direction:column;justify-content:space-between;gap:48px;min-height:420px;background:linear-gradient(135deg,var(--tile-top),var(--tile-bottom));color:var(--on-tile)">
+    <span style="font-family:var(--font-display);font-weight:500;font-size:40px;line-height:44px;letter-spacing:-0.02em">Forté</span>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <h2 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:72px;line-height:76px;letter-spacing:-0.02em">Payroll can't be wrong.</h2>
+      <p style="margin:0;max-width:440px;font-size:20px;line-height:28px;color:var(--on-tile-soft)">Every line explained, and ready to preview a few days before payday.</p>
+    </div>
+    <span style="font-size:16px;line-height:24px;color:var(--on-tile-soft)">Smoothest payroll experience</span>
+  </section>
+
+  <main style="flex:1 1 480px;box-sizing:border-box;padding:64px 32px;display:flex;align-items:center;justify-content:center">
+    <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p class="ft-eyebrow">Sign in</p>
+        <h1 style="margin:0;font-family:var(--font-display);font-weight:500;font-size:32px;line-height:40px;letter-spacing:-0.01em">Sign in to Forté.</h1>
+        <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">There's no password to remember. We email you a link, or you use a passkey.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <div>
+          <label class="lbl" for="email">Work email</label>
+          <input class="field" id="email" type="email" value="isabel@larkspurbakery.example">
+          <p class="hint">If that email has an account, we send a link. We say the same thing either way.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+          <x-import component-from-global-scope="Forte.Button" variant="primary">Email me a sign-in link</x-import>
+          <div style="display:flex;align-items:center;gap:16px;align-self:stretch;color:var(--ink-muted);font-size:14px">
+            <span style="flex:1;height:1px;background:var(--line)"></span>
+            <span>or</span>
+            <span style="flex:1;height:1px;background:var(--line)"></span>
+          </div>
+          <x-import component-from-global-scope="Forte.Button" variant="secondary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"></circle><path d="M11 12l9-9"></path><path d="M16 7l3 3"></path></svg>Use a passkey</x-import>
+          <p class="hint" style="margin:0">A passkey uses your fingerprint, face or device PIN. Nothing to type.</p>
+        </div>
+      </div>
+
+      <div style="padding-top:24px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px">
+        <p style="margin:0;font-size:16px;line-height:24px;color:var(--ink-soft)">New to Forté? <a href="Admin-Setup.dc.html" style="color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px">Set up your company</a>.</p>
+        <p class="hint" style="margin:0">Sandbox. No real money moves.</p>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":820}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
