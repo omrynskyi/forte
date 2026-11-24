@@ -29,6 +29,7 @@ make seed scene=demo   # demo data (Larkspur Bakery)
 - [Architecture](docs/ARCHITECTURE.md): system, state machine, conventions, deployment plan
 - [Demo plan](docs/DEMO.md): script, seed data, recovery
 - [Design notes](docs/DESIGN_NOTES.md): screen → route → task
+- [Roadmap](docs/ROADMAP.md): every task by track, dependencies, critical path ([board](https://github.com/users/omrynskyi/projects/3))
 - [CLAUDE.md](CLAUDE.md): how we (and our coding agents) work in this repo
 
 ## Working on a task

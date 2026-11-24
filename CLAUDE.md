@@ -6,6 +6,7 @@ email) is a mock behind an interface; object storage is MinIO locally and S3 in 
 
 Read in this order before touching code:
 1. Your GitHub issue (`gh issue view <n>`). It lists the files you own and the acceptance criteria.
+   `docs/ROADMAP.md` shows every task, its dependencies and the critical path.
 2. `docs/DECISIONS.md`: settled decisions. **Do not re-decide them.** If one blocks you, comment on
    the issue and stop; don't work around it.
 3. `docs/ARCHITECTURE.md`: how the pieces fit, API and web conventions.
