@@ -1,8 +1,8 @@
 """Timesheets (TIME-1..3). Task B-07.
 
 Employee side (hourly employees only; salaried -> 409 "not_hourly"):
-- The "open period" is the earliest pay period with start_date <= today whose regular run is not
-  yet submitted (no run, or run in DRAFT/CANCELLED). Create the Timesheet lazily on GET.
+- The "open period" = services.timesheets.open_period(db, company_id, clock.today_pacific())
+  (implemented in the skeleton). Create the Timesheet lazily on GET.
 - PUT entries: allowed when status OPEN or REJECTED (REJECTED -> OPEN). Dates must be inside the
   period and <= today. minutes=0 deletes the entry. LOCKED/APPROVED -> 409 "timesheet_locked".
 Manager side (Admin or PM):

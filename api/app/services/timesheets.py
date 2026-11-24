@@ -2,14 +2,15 @@
 Implemented in the skeleton so the payroll track never waits on the timesheets track."""
 
 import uuid
+from datetime import date
 
-from sqlalchemy import func, select, update
+from sqlalchemy import and_, exists, func, select, update
 from sqlalchemy.orm import Session
 
 from app import audit
 from app.auth.deps import Actor
-from app.models import TimeEntry, Timesheet
-from app.models.enums import TimesheetStatus
+from app.models import PayPeriod, PayrollRun, TimeEntry, Timesheet
+from app.models.enums import RunState, RunType, TimesheetStatus
 
 PAYABLE = (TimesheetStatus.APPROVED, TimesheetStatus.LOCKED)
 
@@ -60,3 +61,22 @@ def unlock_for_period(db: Session, pay_period_id: uuid.UUID, actor: Actor | None
         )
         .values(status=TimesheetStatus.APPROVED)
     ).rowcount
+
+
+def open_period(db: Session, company_id: uuid.UUID, today: date) -> PayPeriod | None:
+    """The period hourly employees are logging into right now (B-07, A-06 home, seed): the earliest
+    period that has started (start_date <= today) whose regular run is not yet submitted (no run,
+    or only DRAFT/CANCELLED runs). None if every started period is already submitted."""
+    submitted = exists().where(
+        and_(
+            PayrollRun.pay_period_id == PayPeriod.id,
+            PayrollRun.run_type == RunType.REGULAR,
+            PayrollRun.state.not_in([RunState.DRAFT, RunState.CANCELLED]),
+        )
+    )
+    return db.scalars(
+        select(PayPeriod)
+        .where(PayPeriod.company_id == company_id, PayPeriod.start_date <= today, ~submitted)
+        .order_by(PayPeriod.start_date)
+        .limit(1)
+    ).first()
