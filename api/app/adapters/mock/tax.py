@@ -1,19 +1,49 @@
 """Mock TaxProvider (D6). Task A-01.
 
-Simplified, deterministic, CLEARLY NOT REAL withholding. Rates are integer basis points and every
-line is rounded half-up once via app.money.apply_bp. No wage bases or YTD caps in the MVP.
+WHAT IT DOES
+  For each employee in a payroll run, takes this paycheck's gross pay plus the choices on their
+  W-4 (federal) and DE 4 (California), and returns:
+    - 5 amounts withheld from the employee: federal income tax, Social Security, Medicare,
+      CA income tax (PIT), CA SDI
+    - 5 amounts the employer pays on top: Social Security, Medicare, FUTA, CA SUI, CA ETT
+  The run builder (A-03) sends the whole run in ONE call and stores each result on the payroll
+  item: take-home = gross - employee taxes, employer cost = gross + employer taxes.
 
-Per paycheck, for gross G:
-  social_security        = G x 6.20%            (620 bp)   employee AND employer
-  medicare               = G x 1.45%            (145 bp)   employee AND employer
-  ca_sdi                 = G x 1.30%            (130 bp)   employee only
-  futa                   = G x 0.60%            (60 bp)    employer only
-  ca_sui                 = G x 3.40%            (340 bp)   employer only (new CA employer rate)
-  ca_ett                 = G x 0.10%            (10 bp)    employer only
-  fed_income_tax         = max(0, (G - dependents/periods) x FED_RATE[status] (+200 bp if
-                           multiple_jobs)) + fed_extra
-  ca_pit                 = max(0, G x CA_RATE[status] - allowances x $5.00) + ca_extra
-  (dependents/periods rounded half-up)
+  The rates are simplified and CLEARLY NOT REAL (the UI labels them illustrative). They are fixed
+  by D6: changing one is a team decision, not a code change. Payroll code never does tax math
+  itself; a real vendor would be another class with the same calculate() (D5).
+
+HOW EACH LINE IS COMPUTED (G = gross for this paycheck, everything in integer cents)
+  Every paycheck, whatever the forms say:
+    social_security  = G x 6.20%   (620 bp)  employee AND employer
+    medicare         = G x 1.45%   (145 bp)  employee AND employer
+    ca_sdi           = G x 1.30%   (130 bp)  employee only
+    futa             = G x 0.60%   (60 bp)   employer only
+    ca_sui           = G x 3.40%   (340 bp)  employer only (new CA employer rate)
+    ca_ett           = G x 0.10%   (10 bp)   employer only
+
+  Federal (W-4):
+    1. dependents per paycheck = yearly W-4 Step 3 amount / pay periods (26), rounded half-up
+    2. taxable = max(0, G - dependents per paycheck)
+    3. fed_income_tax = taxable x rate + fed_extra
+       rate: single 12%, married jointly 10%, head of household 11%; +2% if multiple jobs
+
+  California (DE 4):
+    ca_pit = max(0, G x rate - allowances x $5.00) + ca_extra
+    rate: single 4%, married 3%, head of household 3.5%
+
+TAKE-HOME NEVER GOES BELOW $0
+  Without the extras, the five employee lines are at most ~27% of G, so only extra withholding can
+  push taxes past gross. When it does, cut fed_extra first, then ca_extra, until take-home is
+  exactly 0. Regular lines and employer taxes are never changed.
+
+RULES OF THE MATH
+  - Integer cents in and out; rates in basis points (1% = 100 bp). No floats.
+  - Each line is rounded once, half up, via app.money.apply_bp.
+  - Pure: no DB, no network, no randomness. Same input, same cents. One result per request, in the
+    same order. calculation_ref = "mock-tax-v1" (saved as payroll_items.tax_calculation_ref).
+  - Negative amounts or pay_periods_per_year <= 0 raise ValueError (a caller bug, not a result).
+  - Not modelled: annual wage limits / YTD (D6), real tax tables, pay_date (accepted, unused).
 
 Golden case (must be a test): G = 196000 (80h x $24.50), single, no extras, 0 allowances
   -> fed 23520, ss 12152, medicare 2842, ca_pit 7840, ca_sdi 2548; employee taxes 48902,
