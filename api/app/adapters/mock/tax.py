@@ -21,8 +21,10 @@ Golden case (must be a test): G = 196000 (80h x $24.50), single, no extras, 0 al
 """
 
 from app.adapters.tax import TaxRequest, TaxResult
-from app.errors import todo
 from app.models.enums import CaFilingStatus, FedFilingStatus
+from app.money import apply_bp, round_half_up_div
+
+CALCULATION_REF = "mock-tax-v1"
 
 SOCIAL_SECURITY_BP = 620
 MEDICARE_BP = 145
@@ -46,4 +48,65 @@ CA_ALLOWANCE_CENTS = 500
 
 class MockTaxProvider:
     def calculate(self, requests: list[TaxRequest]) -> list[TaxResult]:
-        todo("A-01")
+        """One result per request, same order. Pure: no DB, no network, no randomness."""
+        return [_calculate_one(r) for r in requests]
+
+
+def _validate(r: TaxRequest) -> None:
+    if r.pay_periods_per_year <= 0:
+        raise ValueError("pay_periods_per_year must be positive")
+    for name in (
+        "gross_cents",
+        "fed_dependents_cents",
+        "fed_extra_cents",
+        "ca_allowances",
+        "ca_extra_cents",
+    ):
+        if getattr(r, name) < 0:
+            raise ValueError(f"{name} must not be negative")
+
+
+def _calculate_one(r: TaxRequest) -> TaxResult:
+    _validate(r)
+    gross = r.gross_cents
+
+    social_security = apply_bp(gross, SOCIAL_SECURITY_BP)
+    medicare = apply_bp(gross, MEDICARE_BP)
+    ca_sdi = apply_bp(gross, CA_SDI_BP)
+
+    dependents_per_period = round_half_up_div(r.fed_dependents_cents, r.pay_periods_per_year)
+    fed_rate = FED_RATE_BP[r.fed_filing_status]
+    if r.fed_multiple_jobs:
+        fed_rate += FED_MULTIPLE_JOBS_EXTRA_BP
+    fed_base = apply_bp(max(0, gross - dependents_per_period), fed_rate)
+
+    ca_base = max(
+        0, apply_bp(gross, CA_RATE_BP[r.ca_filing_status]) - r.ca_allowances * CA_ALLOWANCE_CENTS
+    )
+
+    # Withholding never exceeds gross. At these rates the computed lines (everything except the
+    # extras) total at most ~27% of gross, so only the extras can push net below zero: trim
+    # fed_extra first, then ca_extra, until net is exactly 0.
+    fed_extra = r.fed_extra_cents
+    ca_extra = r.ca_extra_cents
+    excess = social_security + medicare + ca_sdi + fed_base + ca_base + fed_extra + ca_extra - gross
+    if excess > 0:
+        cut = min(excess, fed_extra)
+        fed_extra -= cut
+        excess -= cut
+        ca_extra -= min(excess, ca_extra)
+
+    return TaxResult(
+        employee_id=r.employee_id,
+        fed_income_tax_cents=fed_base + fed_extra,
+        social_security_cents=social_security,
+        medicare_cents=medicare,
+        ca_pit_cents=ca_base + ca_extra,
+        ca_sdi_cents=ca_sdi,
+        employer_social_security_cents=apply_bp(gross, SOCIAL_SECURITY_BP),
+        employer_medicare_cents=apply_bp(gross, MEDICARE_BP),
+        futa_cents=apply_bp(gross, FUTA_BP),
+        ca_sui_cents=apply_bp(gross, CA_SUI_BP),
+        ca_ett_cents=apply_bp(gross, CA_ETT_BP),
+        calculation_ref=CALCULATION_REF,
+    )
