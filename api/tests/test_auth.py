@@ -178,7 +178,7 @@ def test_me_without_membership(client, db):
 
 
 def test_me_respects_b02_dependency(client):
-    assert client.get("/api/auth/me").status_code == 501
+    assert client.get("/api/auth/me").status_code == 401
 
 
 @pytest.mark.parametrize(

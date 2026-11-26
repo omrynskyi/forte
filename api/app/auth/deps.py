@@ -15,7 +15,7 @@ from fastapi import Depends, Request
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.errors import Forbidden, todo
+from app.errors import Forbidden
 from app.models.enums import MembershipStatus, Role
 
 
@@ -45,13 +45,32 @@ class SessionUser:
 
 def get_session_user(request: Request, db: Session = Depends(get_db)) -> SessionUser:
     """Resolve the session cookie to a user. Raises 401 if missing/expired/revoked. Task B-02."""
-    todo("B-02")
+    from app.auth.resolution import resolve_identity
+
+    user, _ = resolve_identity(request, db)
+    return SessionUser(user_id=user.id, email=user.email)
 
 
 def get_actor(request: Request, db: Session = Depends(get_db)) -> Actor:
     """Resolve the session cookie to an Actor with an active (or former) membership.
     401 if not signed in, 403 if the user has no membership or it was REMOVED. Task B-02."""
-    todo("B-02")
+    from app.auth.resolution import resolve_identity
+
+    user, member = resolve_identity(request, db)
+    if member is None:
+        raise Forbidden("Create or join a company to continue.", code="no_company")
+    if member.status not in (MembershipStatus.ACTIVE, MembershipStatus.FORMER):
+        raise Forbidden("Your membership does not allow access to this company.")
+    return Actor(
+        user_id=user.id,
+        email=user.email,
+        membership_id=member.id,
+        company_id=member.company_id,
+        role=member.role,
+        status=member.status,
+        employee_id=member.employee_id,
+        ip=request.client.host if request.client else None,
+    )
 
 
 def require_roles(*roles: Role, allow_former: bool = False):  # noqa: ANN201
